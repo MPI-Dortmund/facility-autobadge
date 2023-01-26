@@ -31,6 +31,7 @@ class DeviceStatus:
     status:Status
     latest_issue_link:str = None
     latest_issue_date:str = None
+    group:int = None
 
 
 def get_device_by_labels(lbls:List[str]) -> str:
@@ -40,10 +41,14 @@ def get_device_by_labels(lbls:List[str]) -> str:
             device = lbl
     return device
 
-def get_all_device_status(device_labels: List[str], issues: List[dict]) -> Dict[str, DeviceStatus]:
+def get_all_device_status(device_labels: List, issues: List[dict]) -> Dict[str, DeviceStatus]:
+    device_labels = [r for r in device_labels if str(r['name']).startswith('D:')]
+    label_colors = list(set([r['color'] for r in device_labels]))
+    device_group_map = {l : label_colors.index(l) for l in label_colors}
+
     current_status: Dict[str,DeviceStatus] = {}
     for device in device_labels:
-        current_status[device] = DeviceStatus(status=Status.RUNNING)
+        current_status[device['name']] = DeviceStatus(status=Status.RUNNING, group=device_group_map[device['color']])
 
     for issue in issues:
         device = get_device_by_labels(issue['labels'])
@@ -93,7 +98,7 @@ def clean_devices_badges(all_badges, secret):
 def add_all_devices_badges(device_labels, issues, secret: str):
 
     status: Dict[str,DeviceStatus] = get_all_device_status(device_labels=device_labels,issues=issues)
-
+    status = dict(sorted(status.items(), key=lambda x:x[1].group))
     # Create all batches
     for device in status:
         s=status[device].status
@@ -115,7 +120,7 @@ def update_badges(secret: str):
 
     response = requests.get(api_url_labels, headers={'PRIVATE-TOKEN': secret})
     res = response.json()
-    all_device_labels = [r['name'] for r in res if str(r['name']).startswith('D:')]
+    all_device_labels = res #[r['name'] for r in res if str(r['name']).startswith('D:')]
 
     ## List all issues 
     response = requests.get(api_url_issues, headers={'PRIVATE-TOKEN': secret})
@@ -133,6 +138,7 @@ def update_badges(secret: str):
 
 @app.post("/update/{secret}")
 async def root(secret: str):
+    print("Update")
     update_badges(secret)
     return {f"update done"}
 
