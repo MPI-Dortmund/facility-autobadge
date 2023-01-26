@@ -7,6 +7,9 @@ import sys
 import datetime
 from fastapi import FastAPI
 from enum import IntEnum
+import logging
+logging.basicConfig(filename='webhook-server.log', encoding='utf-8', level=logging.DEBUG)
+
 app = FastAPI()
 
 
@@ -62,7 +65,7 @@ def get_all_device_status(device_labels: List, issues: List[dict]) -> Dict[str, 
         candidate_status = Status.LIMITED
         if is_critical:
             candidate_status = Status.DOWN
-        print(device)
+        
         update = False
         if current_status[device].status > candidate_status:
             # Ignore in case the current status is more severe
@@ -78,13 +81,14 @@ def get_all_device_status(device_labels: List, issues: List[dict]) -> Dict[str, 
             update=True
         
         if update:
+            logging.info(f"Updating {device} - Set status to {candidate_status} ")
             current_status[device].status = candidate_status
             current_status[device].latest_issue_link = issue_link
             current_status[device].latest_issue_date = issue_date
     return current_status
 
 
-def clean_devices_badges(all_badges, secret):
+def clean_devices_badges(all_badges: List[Dict], secret: str):
     for r_id, r in enumerate(all_badges):
         regex_found = re.findall('\/(D:.*?)\/', r['image_url'])# https://regex101.com/r/YQDd29/1
 
@@ -92,10 +96,11 @@ def clean_devices_badges(all_badges, secret):
             id = r['id']
             url=api_url_badges+f"/{id}"
             resp = requests.delete(url, headers={'PRIVATE-TOKEN': secret})
+            logging.info(f"Delete {regex_found}. Response: {resp.status_code} {resp.reason}")
 
         
 
-def add_all_devices_badges(device_labels, issues, secret: str):
+def add_all_devices_badges(device_labels: List[Dict], issues: List[Dict], secret: str):
 
     status: Dict[str,DeviceStatus] = get_all_device_status(device_labels=device_labels,issues=issues)
     status = dict(sorted(status.items(), key=lambda x:x[1].group))
@@ -113,27 +118,32 @@ def add_all_devices_badges(device_labels, issues, secret: str):
             "link_url": link
         }
         res = requests.post(api_url_badges, headers={'PRIVATE-TOKEN': secret}, json=data)
+        logging.info(f"Add devices {device}. Reponse {res.status_code} {res.reason}")
 
 
 def update_badges(secret: str):
+    '''
+        Updates all badges by first deleting all batches and the add them again with the most recent status.
+    '''
     ## List all labels
 
     response = requests.get(api_url_labels, headers={'PRIVATE-TOKEN': secret})
-    res = response.json()
-    all_device_labels = res #[r['name'] for r in res if str(r['name']).startswith('D:')]
+    all_device_labels = response.json()
 
     ## List all issues 
     response = requests.get(api_url_issues, headers={'PRIVATE-TOKEN': secret})
     all_issues = response.json()
-
+    
+    ## List all badges
     response = requests.get(api_url_badges, headers={'PRIVATE-TOKEN': secret})
     all_badges = response.json()
-
-
-    # Clean all device badges
-    print("Clean")
+    
+    ## Remove all badges
+    print("Delete all batches")
     clean_devices_badges(all_badges, secret)
-    print("Fill")
+    
+    ## Add all badges
+    print("Createa all batches with most recent status")
     add_all_devices_badges(all_device_labels, all_issues, secret)
 
 @app.post("/update/{secret}")
