@@ -8,7 +8,7 @@ import datetime
 from fastapi import FastAPI
 from enum import IntEnum
 import logging
-logging.basicConfig(filename='webhook-server.log', encoding='utf-8', level=logging.DEBUG)
+logging.basicConfig(format='%(asctime)s - %(message)s', filename='webhook-server.log', encoding='utf-8', level=logging.DEBUG)
 
 app = FastAPI()
 
@@ -31,6 +31,9 @@ status_color_map = {
 
 @dataclass
 class DeviceStatus:
+    '''
+    Represent a device and its status
+    '''
     status:Status
     latest_issue_link:str = None
     latest_issue_date:str = None
@@ -38,6 +41,9 @@ class DeviceStatus:
 
 
 def get_device_by_labels(lbls:List[str]) -> str:
+    '''
+    Find the devices label. Return none if no label is a device label (starts with 'D:')
+    '''
     device = None
     for lbl in lbls:
         if str(lbl).startswith('D:'):
@@ -89,6 +95,10 @@ def get_all_device_status(device_labels: List, issues: List[dict]) -> Dict[str, 
 
 
 def clean_devices_badges(all_badges: List[Dict], secret: str):
+    '''
+    Delete all badges
+    '''
+
     for r_id, r in enumerate(all_badges):
         regex_found = re.findall('\/(D:.*?)\/', r['image_url'])# https://regex101.com/r/YQDd29/1
 
@@ -101,6 +111,9 @@ def clean_devices_badges(all_badges: List[Dict], secret: str):
         
 
 def add_all_devices_badges(device_labels: List[Dict], issues: List[Dict], secret: str):
+    '''
+    Create the badges and add them to GitLab
+    '''
 
     status: Dict[str,DeviceStatus] = get_all_device_status(device_labels=device_labels,issues=issues)
     status = dict(sorted(status.items(), key=lambda x:x[1].group))
@@ -139,11 +152,11 @@ def update_badges(secret: str):
     all_badges = response.json()
     
     ## Remove all badges
-    print("Delete all batches")
+    logging.info("Delete all badges")
     clean_devices_badges(all_badges, secret)
     
     ## Add all badges
-    print("Createa all batches with most recent status")
+    logging.info("Create all badges with most recent status")
     add_all_devices_badges(all_device_labels, all_issues, secret)
 
 @app.post("/update/{secret}")
@@ -151,13 +164,4 @@ async def root(secret: str):
     print("Update")
     update_badges(secret)
     return {f"update done"}
-
-
-
-
-
-
-
-
-
 
