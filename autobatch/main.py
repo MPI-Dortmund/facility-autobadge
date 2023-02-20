@@ -20,11 +20,13 @@ api_url_badges = "https://gitlab.gwdg.de/api/v4/projects/28068/badges"
 
 class Status(IntEnum):
     RUNNING = 0
-    LIMITED = 1
-    DOWN = 2
+    INFO = 1
+    LIMITED = 2
+    DOWN = 3
 
 status_color_map = {
     Status.RUNNING: "green",
+    Status.INFO: "blue",
     Status.LIMITED: "yellow",
     Status.DOWN: "red"
 }
@@ -64,11 +66,15 @@ def get_all_device_status(device_labels: List, issues: List[dict]) -> Dict[str, 
         if not device:
             continue
         is_critical = 'CRITICAL' in issue['labels']
+        is_info = 'Information' in issue['labels']
         
         issue_date = issue['updated_at'][:10]
         issue_link = issue['web_url']
 
         candidate_status = Status.LIMITED
+        if is_info:
+            candidate_status = Status.INFO
+        
         if is_critical:
             candidate_status = Status.DOWN
         
