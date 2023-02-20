@@ -8,6 +8,8 @@ import datetime
 from fastapi import FastAPI
 from enum import IntEnum
 import logging
+import urllib.parse
+
 logging.basicConfig(format='%(asctime)s - %(message)s', filename='webhook-server.log', encoding='utf-8', level=logging.DEBUG)
 
 app = FastAPI()
@@ -76,7 +78,9 @@ def get_all_device_status(device_labels: List, issues: List[dict]) -> Dict[str, 
         is_info = 'Information' in issue['labels']
         
         issue_date = issue['updated_at'][:10]
-        issue_link = issue['web_url']
+
+        #issue_link = issue['web_url']
+        issue_link = "https://gitlab.gwdg.de/mpi-dortmund/dept3/emfacility/-/issues/?sort=updated_desc&state=opened&label_name[]={urllib.parse.quote_plus(device)}"
 
         candidate_status = Status.LIMITED
         if is_info:
