@@ -80,7 +80,7 @@ def get_all_device_status(device_labels: List, issues: List[dict]) -> Dict[str, 
         issue_date = issue['updated_at'][:10]
 
         #issue_link = issue['web_url']
-        issue_link = "https://gitlab.gwdg.de/mpi-dortmund/dept3/emfacility/-/issues/?sort=updated_desc&state=opened&label_name[]={urllib.parse.quote_plus(device)}"
+        issue_link = f"https://gitlab.gwdg.de/mpi-dortmund/dept3/emfacility/-/issues/?sort=updated_desc&state=opened&label_name[]={urllib.parse.quote_plus(device)}"
 
         candidate_status = Status.LIMITED
         if is_info:
