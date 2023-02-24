@@ -144,7 +144,7 @@ def add_all_devices_badges(device_labels: List[Dict], issues: List[Dict], secret
         if status[device].latest_issue_link:
             link = status[device].latest_issue_link
         data = {
-            "image_url": f"https://badgen.net/badge/{device}/{status_name_map[s]}{date}/{status_color_map[s]}?icon=github",
+            "image_url": f"https://badgen.net/badge/{device}/{status_name_map[s]}{date}/{status_color_map[s]}",
             "link_url": link
         }
         res = requests.post(api_url_badges, headers={'PRIVATE-TOKEN': secret}, json=data)
