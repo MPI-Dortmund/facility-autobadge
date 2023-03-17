@@ -15,8 +15,8 @@ logging.basicConfig(format='%(asctime)s - %(message)s', filename='webhook-server
 app = FastAPI()
 
 
-api_url_labels = "https://gitlab.gwdg.de/api/v4/projects/28068/labels"
-api_url_issues = "https://gitlab.gwdg.de/api/v4/projects/28068/issues?state=opened"
+api_url_labels = "https://gitlab.gwdg.de/api/v4/projects/28068/labels?per_page=200"
+api_url_issues = "https://gitlab.gwdg.de/api/v4/projects/28068/issues?state=opened&per_page=200"
 api_url_badges = "https://gitlab.gwdg.de/api/v4/projects/28068/badges"
 
 
