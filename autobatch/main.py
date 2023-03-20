@@ -28,7 +28,7 @@ class Status(IntEnum):
 
 status_color_map = {
     Status.RUNNING: "green",
-    Status.INFO: "blue",
+    Status.INFO: "green?labelColor=blue",
     Status.LIMITED: "yellow",
     Status.DOWN: "red"
 }
