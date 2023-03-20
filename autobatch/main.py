@@ -36,7 +36,7 @@ status_color_map = {
 
 status_name_map = {
     Status.RUNNING: "RUNNING",
-    Status.INFO: "RUNNING > CHECK INFO",
+    Status.INFO: "RUNNING,INFO",
     Status.LIMITED: "LIMITED",
     Status.DOWN: "DOWN"
 }
@@ -144,12 +144,12 @@ def add_all_devices_badges(device_labels: List[Dict], issues: List[Dict], secret
         s=status[device].status
         date=""
         if status[device].latest_issue_date:
-            date=f"-Last update {status[device].days_since_update}d ago"
+            date=f",Updated {status[device].days_since_update}d ago"
         link="https://gitlab.gwdg.de/mpi-dortmund/dept3/emfacility/-/boards"
         if status[device].latest_issue_link:
             link = status[device].latest_issue_link
         data = {
-            "image_url": f"https://flat.badgen.net/badge/{device}/{status_name_map[s]}{date}/{status_color_map[s]}",
+            "image_url": f"https://flat.badgen.net/badge/{device}/{status_name_map[s]}{date}/{status_color_map[s]}?list=|",
             "link_url": link
         }
         res = requests.post(api_url_badges, headers={'PRIVATE-TOKEN': secret}, json=data)
