@@ -64,6 +64,7 @@ def get_device_by_labels(lbls:List[str]) -> str:
 def get_all_device_status(device_labels: List, issues: List[dict]) -> Dict[str, DeviceStatus]:
     device_labels = [r for r in device_labels if str(r['name']).startswith('D:')]
     label_colors = list(set([r['color'] for r in device_labels]))
+    label_colors.sort()
     device_group_map = {l : label_colors.index(l) for l in label_colors}
 
     current_status: Dict[str,DeviceStatus] = {}
