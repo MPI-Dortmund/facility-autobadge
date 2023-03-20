@@ -81,7 +81,7 @@ def get_all_device_status(device_labels: List, issues: List[dict]) -> Dict[str, 
         is_info = 'Information' in issue['labels']
         
         issue_date = issue['updated_at'][:10]
-        issue_days_since_update = (datetime.datetime.today()-datetime.datetime.strptime(issue_date,'%Y-%m-%d')).days()
+        issue_days_since_update = (datetime.datetime.today()-datetime.datetime.strptime(issue_date,'%Y-%m-%d')).days
 
         #issue_link = issue['web_url']
         issue_link = f"https://gitlab.gwdg.de/mpi-dortmund/dept3/emfacility/-/issues/?sort=updated_desc&state=opened&label_name[]={urllib.parse.quote_plus(device)}"
