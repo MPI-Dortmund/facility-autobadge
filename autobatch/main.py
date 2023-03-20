@@ -28,10 +28,10 @@ class Status(IntEnum):
     DOWN = 3
 
 status_color_map = {
-    Status.RUNNING: "green",
-    Status.INFO: "green?labelColor=blue",
-    Status.LIMITED: "yellow",
-    Status.DOWN: "red"
+    Status.RUNNING: "green?list=|",
+    Status.INFO: "green?labelColor=blue&list=|",
+    Status.LIMITED: "yellow?list=|",
+    Status.DOWN: "red?list=|"
 }
 
 status_name_map = {
@@ -149,7 +149,7 @@ def add_all_devices_badges(device_labels: List[Dict], issues: List[Dict], secret
         if status[device].latest_issue_link:
             link = status[device].latest_issue_link
         data = {
-            "image_url": f"https://flat.badgen.net/badge/{device}/{status_name_map[s]}{date}/{status_color_map[s]}?list=|",
+            "image_url": f"https://flat.badgen.net/badge/{device}/{status_name_map[s]}{date}/{status_color_map[s]}",
             "link_url": link
         }
         res = requests.post(api_url_badges, headers={'PRIVATE-TOKEN': secret}, json=data)
