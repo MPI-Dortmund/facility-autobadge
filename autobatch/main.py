@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from typing import List, Dict
 import sys
 import datetime
+from datetime import date
 from fastapi import FastAPI
 from enum import IntEnum
 import logging
