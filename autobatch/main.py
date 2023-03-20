@@ -48,6 +48,7 @@ class DeviceStatus:
     status:Status
     latest_issue_link:str = None
     latest_issue_date:str = None
+    days_since_update:int = None
     group:int = None
 
 
@@ -79,6 +80,7 @@ def get_all_device_status(device_labels: List, issues: List[dict]) -> Dict[str, 
         is_info = 'Information' in issue['labels']
         
         issue_date = issue['updated_at'][:10]
+        issue_days_since_update = (date.today()-datetime.datetime.strptime(issue_date,'%Y-%m-%d')).days()
 
         #issue_link = issue['web_url']
         issue_link = f"https://gitlab.gwdg.de/mpi-dortmund/dept3/emfacility/-/issues/?sort=updated_desc&state=opened&label_name[]={urllib.parse.quote_plus(device)}"
@@ -109,6 +111,7 @@ def get_all_device_status(device_labels: List, issues: List[dict]) -> Dict[str, 
             current_status[device].status = candidate_status
             current_status[device].latest_issue_link = issue_link
             current_status[device].latest_issue_date = issue_date
+            current_status[device].days_since_update = issue_days_since_update
     return current_status
 
 
@@ -140,7 +143,7 @@ def add_all_devices_badges(device_labels: List[Dict], issues: List[Dict], secret
         s=status[device].status
         date=""
         if status[device].latest_issue_date:
-            date=f"-{status[device].latest_issue_date:}"
+            date=f"-Last update {status[device].days_since_update}d ago"
         link="https://gitlab.gwdg.de/mpi-dortmund/dept3/emfacility/-/boards"
         if status[device].latest_issue_link:
             link = status[device].latest_issue_link
