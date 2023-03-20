@@ -165,7 +165,7 @@ def update_badges(secret: str):
     all_issues = response.json()
     
     ## List all badges
-    response = requests.get(api_url_badges, headers={'PRIVATE-TOKEN': secret})
+    response = requests.get(api_url_badges+"?per_page=200", headers={'PRIVATE-TOKEN': secret})
     all_badges = response.json()
     
     ## Remove all badges
