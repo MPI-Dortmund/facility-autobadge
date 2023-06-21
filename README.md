@@ -15,6 +15,12 @@ The server that called by the webhook is running on https://cloud.gwdg.de/ and w
 
 The ip adress is 141.5.100.114 and it listens to port 8000.
 
+Connect to it via:
+
+```
+cloud@141.5.100.114
+```
+
 Restart server with: 
 
 ```bash
