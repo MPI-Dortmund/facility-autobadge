@@ -108,7 +108,7 @@ def get_all_device_status(device_labels: List, issues: List[dict]) -> Dict[str, 
             update=True
         
         if update:
-            logging.info(f"Updating {device} - Set status to {candidate_status} ")
+            logging.info(f"Updating {device} - Set status to {candidate_status}")
             current_status[device].status = candidate_status
             current_status[device].latest_issue_link = issue_link
             current_status[device].latest_issue_date = issue_date
