@@ -15,7 +15,7 @@ logging.basicConfig(format='%(asctime)s - %(message)s', filename='webhook-server
 
 app = FastAPI()
 
-
+# Per page is necessay, as gitlab only returns those data that is visible on the page.
 api_url_labels = "https://gitlab.gwdg.de/api/v4/projects/28068/labels?per_page=200"
 api_url_issues = "https://gitlab.gwdg.de/api/v4/projects/28068/issues?state=opened&per_page=200"
 api_url_badges = "https://gitlab.gwdg.de/api/v4/projects/28068/badges"
@@ -76,9 +76,16 @@ def get_all_device_status(device_labels: List, issues: List[dict]) -> Dict[str, 
     for issue in issues:
         device = get_device_by_labels(issue['labels'])
         if not device:
+            # in that case, the issue does not belong to devices therefore no device needs to be updated
             continue
+
         is_critical = 'CRITICAL' in issue['labels']
         is_info = 'Information' in issue['labels']
+        is_logbook = 'Logbook' in issue['labels']
+
+        if is_logbook:
+            # If its a logbook entry, it has no influence on the status of a device
+            continue
         
         issue_date = issue['updated_at'][:10]
         issue_days_since_update = (datetime.datetime.today()-datetime.datetime.strptime(issue_date,'%Y-%m-%d')).days
