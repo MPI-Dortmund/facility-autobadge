@@ -15,10 +15,14 @@ logging.basicConfig(format='%(asctime)s - %(message)s', filename='webhook-server
 
 app = FastAPI()
 
+# Project URL
+project_url = "https://gitlab.gwdg.de/mpi-dortmund/dept3/emfacility/"
+project_api_url = "https://gitlab.gwdg.de/api/v4/projects/28068/"
+
 # Per page is necessay, as gitlab only returns those data that is visible on the page.
-api_url_labels = "https://gitlab.gwdg.de/api/v4/projects/28068/labels?per_page=200"
-api_url_issues = "https://gitlab.gwdg.de/api/v4/projects/28068/issues?state=opened&per_page=200"
-api_url_badges = "https://gitlab.gwdg.de/api/v4/projects/28068/badges"
+api_url_labels = f"{project_api_url}labels?per_page=200"
+api_url_issues = f"{project_api_url}issues?state=opened&per_page=200"
+api_url_badges = f"{project_api_url}badges"
 
 
 class Status(IntEnum):
@@ -91,7 +95,7 @@ def get_all_device_status(device_labels: List, issues: List[dict]) -> Dict[str, 
         issue_days_since_update = (datetime.datetime.today()-datetime.datetime.strptime(issue_date,'%Y-%m-%d')).days
 
         #issue_link = issue['web_url']
-        issue_link = f"https://gitlab.gwdg.de/mpi-dortmund/dept3/emfacility/-/issues/?sort=updated_desc&state=opened&label_name[]={urllib.parse.quote_plus(device)}"
+        issue_link = f"{project_url}-/issues/?sort=updated_desc&state=opened&label_name[]={urllib.parse.quote_plus(device)}"
 
         candidate_status = Status.LIMITED
         if is_info:
@@ -152,7 +156,7 @@ def add_all_devices_badges(device_labels: List[Dict], issues: List[Dict], secret
         date=""
         if status[device].latest_issue_date:
             date=f",Updated {status[device].days_since_update}d ago"
-        link="https://gitlab.gwdg.de/mpi-dortmund/dept3/emfacility/-/boards"
+        link=f"{project_url}-/boards"
         if status[device].latest_issue_link:
             link = status[device].latest_issue_link
         data = {
