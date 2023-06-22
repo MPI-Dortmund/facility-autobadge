@@ -1,11 +1,10 @@
-This is the repository for our gitlab webhooks. So far there is only autobadge. which creates badges according the following rules:
+# facility-autobadge
 
-
-# facility-badge
-
-Facility badge creates a traffic light system on your gitlab repo startpage. The traffic light system gets automatically updated based on the issues in the issues list. In that way, all users of the facility know the current status of the devices:
+Facility badge creates a traffic light system for facility devices on your gitlab repo startpage. The traffic light system gets automatically updated based on the issues in the issues list. In that way, all users of the facility know the current status of the devices:
 
 ![autobadge example](resources/autobadge.png)
+
+This project was developed in cooperation with the EM-Facility managers at the MPI-Dortmund Daniel Prumbaum and Oliver Hofnagel.
 
 ## Traffic system rules
 The badges are automatically updated by using gitlab webhooks, according the following rules:
