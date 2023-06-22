@@ -3,7 +3,7 @@ This is the repository for our gitlab webhooks. So far there is only autobadge. 
 
 # facility-badge
 
-Facility badge creates a traffic light system on your gitlab repo startpage. In that way, all users of the facility know the current status of the devices:
+Facility badge creates a traffic light system on your gitlab repo startpage. The traffic light system gets automatically updated based on the issues in the issues list. In that way, all users of the facility know the current status of the devices:
 
 SHOW IMAGE HERE
 
@@ -21,23 +21,29 @@ The created badges get sorted according the label colors, that allows the groupi
 
 ## Installation
 
-The facility-badge server needs to reachable by your gitlab installation. It does not need any special hardware. 
+The facility-badge server needs to reachable by your gitlab installation. It does not need any special hardware.  I assume that you already created a gitlab repository where the issue system should working on.
+
 
 ### Setup server
 
-On the server we create the conda enviroment with:
+1. Clone the repository using git
 
-```bash
-conda create --name "autobadge" --file=conda_env.yml
-```
+2. Create the conda environment `autobadge`:
+    ```bash
+    conda create --name "autobadge" --file=conda_env.yml
+    ```
 
-Check the path to your new conda environment with
+    Check the path to your new conda environment with
 
-```
-conda env list
-```
+    ```
+    conda env list
+    ```
 
-You need it for the next step.
+    You will need the path later.
+
+3. G
+
+
 
 We keep the badgeserver running in the background by using a systemctl service. If you server is running ubuntu, you can setup it as follows:
 
@@ -71,7 +77,6 @@ We keep the badgeserver running in the background by using a systemctl service. 
     sudo systemctl enable autobadge.service
     ```
 
-### Setup gitlab
 
 
 ## Implementation details
