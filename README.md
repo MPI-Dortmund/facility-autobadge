@@ -23,7 +23,7 @@ The created badges get sorted according the label colors, that allows the groupi
 The facility-badge server needs to reachable by your gitlab installation. It does not need any special hardware.  I assume that you already created a gitlab repository where the issue system should working on.
 
 
-### Configure the script
+### 1. Configure the script
 
 On your server do the following
 
@@ -50,7 +50,7 @@ On your server do the following
     ```
     Now fill in your details into the badger.toml
 
-### Start the service
+### 2. Start the service
 
 We keep the badgeserver running in the background by using a systemctl service. If you server is running ubuntu, you can setup it as follows:
 
@@ -84,7 +84,7 @@ We keep the badgeserver running in the background by using a systemctl service. 
     sudo systemctl enable autobadge.service
     ```
 
-### Setup your gitlab repository
+### 3. Setup your gitlab repository
 
 1. Create a label for each of your devices under `Project information -> Labels`. Make sure that each device label start with "D:".
 
@@ -115,6 +115,6 @@ We keep the badgeserver running in the background by using a systemctl service. 
 
     5. Click "Add webhook"
 
-5. Now you are basically ready! Test it with by clicking on the `Test` dropdown list and select `Issue events`. If you go back to your repo start page, you should see a all badges in green :-)
+    6. Now you are basically ready! Test it with by clicking on the `Test` dropdown list and select `Issue events`. If you go back to your repo start page, you should see a all badges in green :-)
 
-You can now start create issues and it will update the traffic light system according the `Traffic system rules` mentioned above.
+    You can now start create issues and it will update the traffic light system according the `Traffic system rules` mentioned above.
