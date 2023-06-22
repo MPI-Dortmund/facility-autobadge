@@ -26,12 +26,12 @@ Issues with the label "logbook" will be ignored.
 
 ## Installation
 
-The facility-badge server needs to reachable by your gitlab installation. It does not need any special hardware.  I assume that you already created a gitlab repository where the issue system should working on.
+The facility-badge server needs to reachable by your gitlab installation. It does not need any special hardware.  I assume that you already created a gitlab repository where the facility-badge system should working with.
 
 
 ### 1. Configure the script
 
-On your server do the following
+On your facility-badge server do the following
 
 1. Clone the repository using git and navigate into the repo directory
 
@@ -42,7 +42,7 @@ On your server do the following
 
     Check the path to your new conda environment with
 
-    ```
+    ```bash
     conda env list
     ```
 
@@ -54,11 +54,11 @@ On your server do the following
     cd config
     cp badger_sample.toml badger.toml
     ```
-    Now fill in your details into the badger.toml
+    Now fill in your details into the badger.toml using a text editor of your choice.
 
 ### 2. Start the service
 
-We keep the badgeserver running in the background by using a systemctl service. If you server is running ubuntu, you can setup it as follows:
+We keep the badgeserver running in the background by using a `systemctl` service. If your server is running ubuntu, you can setup it as follows:
 
 1. Create a new service file `autobadge.service` in `/etc/systemd/system/` with the follwoing content:
 
