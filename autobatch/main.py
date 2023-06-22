@@ -201,7 +201,7 @@ async def root(secret: str):
     assert os.path.exists("badger.toml"), "Can't find 'badger.toml' configuration file."
 
     with open("badger.toml", mode="rb") as fp:
-        config = tomli.load(fp)
+        config = tomllib.load(fp)
     
     # Per page is necessay, as gitlab only returns those data that is visible on the page.
     config['api'] = {}
