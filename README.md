@@ -24,7 +24,9 @@ The created badges get sorted according the label colors, that allows the groupi
 The facility-badge server needs to reachable by your gitlab installation. It does not need any special hardware.  I assume that you already created a gitlab repository where the issue system should working on.
 
 
-### Setup server
+### Configure the script
+
+On your server do the following
 
 1. Clone the repository using git
 
@@ -42,8 +44,14 @@ The facility-badge server needs to reachable by your gitlab installation. It doe
     You will need the path later.
 
 3. Create the configuration file
+    Navigate to the `config` directory, make a copy of the sample configuration file named `badger.toml`:
+    ```bash
+    cd config
+    cp badger_sample.toml badger.toml
+    ```
+    Now fill in your details into the badger.toml
 
-
+### Start the service
 
 We keep the badgeserver running in the background by using a systemctl service. If you server is running ubuntu, you can setup it as follows:
 
@@ -76,6 +84,41 @@ We keep the badgeserver running in the background by using a systemctl service. 
     ```
     sudo systemctl enable autobadge.service
     ```
+
+### Setup your gitlab repository
+
+1. Create a label for each of your devices under `Project information -> Labels`. Make sure that each device label start with "D:".
+
+2. Create a label named `CRITICAL`
+
+3. Create a label named `Information`
+
+4. Create a access token unter `Settings -> Access Tokens` token with the following permissions for Role 'OWNER':
+    - API
+    - READ_API
+
+    Make sure that you copy the your access token. 
+
+4. Setup the webhook under `Settings -> Webhook`
+
+    1. Set the URL to: `http://ip.to.your.server:8000/update/YOUR_ACCESS_TOKEN
+    
+        Replace YOUR_ACCESS_TOKEN with your access token ;-)
+
+    2. Activate `Mask portions of URL`
+        - Set the field `Sensitive portion of URL` to YOUR_ACCESS_TOKEN and `How it looks in the UI ` with "SECRET"
+    3. Activate the checkboxes:
+        - Issue events
+        - Confidential issues events
+        - Comments
+        - Confidential comments
+    4. Disable SSL Verification
+
+    5. Click "Add webhook"
+
+5. Now you are basically ready! Test it with by clicking on the `Test` dropdown list and select `Issue events`. If you go back to your repo start page, you should see a all badges in green :-)
+
+You can now start create issues and it will update the traffic light system according the `Traffic system rules` mentioned above.
 
 
 
