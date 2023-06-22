@@ -18,6 +18,8 @@ The badges are automatically updated by using gitlab webhooks, according the fol
     
 The created badges get sorted according the label colors, that allows the grouping of devices.
 
+Issues with the label "logbook" will be ignored.
+
 ## Installation
 
 The facility-badge server needs to reachable by your gitlab installation. It does not need any special hardware.  I assume that you already created a gitlab repository where the issue system should working on.
