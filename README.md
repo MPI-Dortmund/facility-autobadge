@@ -13,7 +13,7 @@ This project was developed in cooperation with our EM-Facility managers at the M
 ## Traffic system rules
 The badges are automatically updated by using gitlab webhooks, according the following rules:
 
-- For each label starting "D:" it creates a batch with either the status "RUNNING", "LIMITED" or "DOWN".
+- For each label starting with the prefix "D:" it creates a badge with either the status "RUNNING", "LIMITED" or "DOWN".
 - For a given device label ("D:XXX") it will set the status to:
     - "RUNNING" if there is no issue with the device label
     - "RUNNING | INFO" Important information available.
