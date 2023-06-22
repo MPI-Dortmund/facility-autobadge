@@ -23,6 +23,38 @@ The created badges get sorted according the label colors, that allows the groupi
 
 ### Installation
 
+The facility-badge server needs to reachable by your gitlab installation. On the server we create hte conda enviroment with:
+
+```bash
+conda create --name "autobadge" --file=conda_env.yml
+```
+
+Check the path to your new conda environment with
+
+```
+conda env list
+```
+
+You need it for the next step.
+
+We keep the badgeserver running in the background by using a systemctl service. If you server is running ubuntu, you can setup it as follows:
+
+1. Create a new service file `autobadge.service` in `/etc/systemd/system/` with the follwoing content:
+
+    ```
+    [Unit]
+    Description=Autobadge gitlab server
+    After=network.target
+
+    [Service]
+    User=cloud
+    Group=cloud
+    WorkingDirectory=/path/to/folder/which/contains/the/main/dot/py/
+    ExecStart=/path/to/autobadge/conda/environment/bin/uvicorn main:app --host 0.0.0.0 --port 8000
+
+    [Install]
+    WantedBy=multi-user.target
+    ```
 
 
 ### Implementation details
