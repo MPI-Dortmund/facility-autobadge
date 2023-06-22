@@ -4,7 +4,11 @@ Facility badge creates a traffic light system for facility devices on your gitla
 
 ![autobadge example](resources/autobadge.png)
 
-This project was developed in cooperation with the EM-Facility managers at the MPI-Dortmund Daniel Prumbaum and Oliver Hofnagel.
+The created badges get sorted according the label colors, that allows the grouping of devices. 
+
+Additionally, the badges show you when there was the last update (last comment) regarding the devices.
+
+This project was developed in cooperation with the EM-Facility managers at the MPI-Dortmund **Daniel Prumbaum** and **Oliver Hofnagel**.
 
 ## Traffic system rules
 The badges are automatically updated by using gitlab webhooks, according the following rules:
@@ -16,7 +20,7 @@ The badges are automatically updated by using gitlab webhooks, according the fol
     - "LIMITED" if there is an issue with the device label or
     - "DOWN" if there is an issue with the device label and additionally it has the label "CRITICAL" assigned
     
-The created badges get sorted according the label colors, that allows the grouping of devices.
+
 
 Issues with the label "logbook" will be ignored.
 
