@@ -121,6 +121,6 @@ We keep the badgeserver running in the background by using a systemctl service. 
 
     - Click "Add webhook"
 
-5. Now you are basically ready! Test it with by clicking on the `Test` dropdown list and select `Issue events`. If you go back to your repo start page, you should see a all badges in green :-)
+5. Now you are basically ready! Test it with by clicking on the `Test` dropdown list and select `Issue events`. If you go back to your repo start page, you should see all badges in green :-)
 
 You can now start create issues and it will update the traffic light system according the `Traffic system rules` mentioned above.
