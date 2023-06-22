@@ -1,0 +1,3 @@
+[repo]
+project_url = "https://gitlab.yourserver.de/path/to/project/"
+project_api_url = "https://gitlab.yourserver.de/api/v4/projects/12345/"

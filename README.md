@@ -41,7 +41,7 @@ The facility-badge server needs to reachable by your gitlab installation. It doe
 
     You will need the path later.
 
-3. G
+3. Create the configuration file
 
 
 
