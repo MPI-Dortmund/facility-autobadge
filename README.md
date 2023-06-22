@@ -118,22 +118,3 @@ We keep the badgeserver running in the background by using a systemctl service. 
 5. Now you are basically ready! Test it with by clicking on the `Test` dropdown list and select `Issue events`. If you go back to your repo start page, you should see a all badges in green :-)
 
 You can now start create issues and it will update the traffic light system according the `Traffic system rules` mentioned above.
-
-
-
-## Implementation details
-The server that called by the webhook is running on https://cloud.gwdg.de/ and was setup by Thorsten Wagner.
-
-The ip adress is 141.5.100.114 and it listens to port 8000.
-
-Connect to it via:
-
-```
-cloud@141.5.100.114
-```
-
-Restart server with: 
-
-```bash
-sudo systemctl restart autobadge
-```
