@@ -8,7 +8,7 @@ The created badges get sorted according the label colors, that allows the groupi
 
 Additionally, the badges show you when there was the last update (last comment) regarding the devices.
 
-This project was developed in cooperation with the EM-Facility managers at the MPI-Dortmund **Daniel Prumbaum** and **Oliver Hofnagel**.
+This project was developed in cooperation with our EM-Facility managers at the MPI-Dortmund **Daniel Prumbaum** and **Oliver Hofnagel**.
 
 ## Traffic system rules
 The badges are automatically updated by using gitlab webhooks, according the following rules:
