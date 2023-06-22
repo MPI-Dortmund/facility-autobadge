@@ -100,21 +100,21 @@ We keep the badgeserver running in the background by using a systemctl service. 
 
 4. Setup the webhook under `Settings -> Webhook`
 
-    1. Set the URL to: `http://ip.to.your.server:8000/update/YOUR_ACCESS_TOKEN
+    - Set the URL to: `http://ip.to.your.server:8000/update/YOUR_ACCESS_TOKEN
     
         Replace YOUR_ACCESS_TOKEN with your access token ;-)
 
-    2. Activate `Mask portions of URL`
+    - Activate `Mask portions of URL`
         - Set the field `Sensitive portion of URL` to YOUR_ACCESS_TOKEN and `How it looks in the UI ` with "SECRET"
-    3. Activate the checkboxes:
+    - Activate the checkboxes:
         - Issue events
         - Confidential issues events
         - Comments
         - Confidential comments
-    4. Disable SSL Verification
+    - Disable SSL Verification
 
-    5. Click "Add webhook"
+    - Click "Add webhook"
 
-    6. Now you are basically ready! Test it with by clicking on the `Test` dropdown list and select `Issue events`. If you go back to your repo start page, you should see a all badges in green :-)
+5. Now you are basically ready! Test it with by clicking on the `Test` dropdown list and select `Issue events`. If you go back to your repo start page, you should see a all badges in green :-)
 
-    You can now start create issues and it will update the traffic light system according the `Traffic system rules` mentioned above.
+You can now start create issues and it will update the traffic light system according the `Traffic system rules` mentioned above.
