@@ -1,28 +1,29 @@
-import requests
-import pprint
-import re
-from dataclasses import dataclass
-from typing import List, Dict
-import sys
 import datetime
-from datetime import date
-from fastapi import FastAPI
-from enum import IntEnum
 import logging
+import os
+import re
 import urllib.parse
+from dataclasses import dataclass
+from enum import IntEnum
+from typing import List, Dict
+
+import requests
+
+try:
+    import tomllib
+except ModuleNotFoundError:
+    import tomli as tomllib
+
+from fastapi import FastAPI
 
 logging.basicConfig(format='%(asctime)s - %(message)s', filename='webhook-server.log', encoding='utf-8', level=logging.DEBUG)
 
 app = FastAPI()
 
-# Project URL
-project_url = "https://gitlab.gwdg.de/mpi-dortmund/dept3/emfacility/"
-project_api_url = "https://gitlab.gwdg.de/api/v4/projects/28068/"
+PAGE_LIMIT=200
 
-# Per page is necessay, as gitlab only returns those data that is visible on the page.
-api_url_labels = f"{project_api_url}labels?per_page=200"
-api_url_issues = f"{project_api_url}issues?state=opened&per_page=200"
-api_url_badges = f"{project_api_url}badges"
+# Project URL
+config: Dict
 
 
 class Status(IntEnum):
@@ -95,7 +96,7 @@ def get_all_device_status(device_labels: List, issues: List[dict]) -> Dict[str, 
         issue_days_since_update = (datetime.datetime.today()-datetime.datetime.strptime(issue_date,'%Y-%m-%d')).days
 
         #issue_link = issue['web_url']
-        issue_link = f"{project_url}-/issues/?sort=updated_desc&state=opened&label_name[]={urllib.parse.quote_plus(device)}"
+        issue_link = f"{config['repo']['project_url']}-/issues/?sort=updated_desc&state=opened&label_name[]={urllib.parse.quote_plus(device)}"
 
         candidate_status = Status.LIMITED
         if is_info:
@@ -137,7 +138,7 @@ def clean_devices_badges(all_badges: List[Dict], secret: str):
 
         if regex_found:
             id = r['id']
-            url=api_url_badges+f"/{id}"
+            url=config['api']['badges']+f"/{id}"
             resp = requests.delete(url, headers={'PRIVATE-TOKEN': secret})
             logging.info(f"Delete {regex_found}. Response: {resp.status_code} {resp.reason}")
 
@@ -156,14 +157,14 @@ def add_all_devices_badges(device_labels: List[Dict], issues: List[Dict], secret
         date=""
         if status[device].latest_issue_date:
             date=f",Updated {status[device].days_since_update}d ago"
-        link=f"{project_url}-/boards"
+        link=f"{config['repo']['project_url']}-/boards"
         if status[device].latest_issue_link:
             link = status[device].latest_issue_link
         data = {
             "image_url": f"https://flat.badgen.net/badge/{device}/{status_name_map[s]}{date}/{status_color_map[s]}",
             "link_url": link
         }
-        res = requests.post(api_url_badges, headers={'PRIVATE-TOKEN': secret}, json=data)
+        res = requests.post(config['api']['badges'], headers={'PRIVATE-TOKEN': secret}, json=data)
         logging.info(f"Add devices {device}. Reponse {res.status_code} {res.reason}")
 
 
@@ -173,15 +174,15 @@ def update_badges(secret: str):
     '''
     ## List all labels
 
-    response = requests.get(api_url_labels, headers={'PRIVATE-TOKEN': secret})
+    response = requests.get(config['api']['labels'], headers={'PRIVATE-TOKEN': secret})
     all_device_labels = response.json()
 
     ## List all issues 
-    response = requests.get(api_url_issues, headers={'PRIVATE-TOKEN': secret})
+    response = requests.get(config['api']['issues'], headers={'PRIVATE-TOKEN': secret})
     all_issues = response.json()
     
     ## List all badges
-    response = requests.get(api_url_badges+"?per_page=200", headers={'PRIVATE-TOKEN': secret})
+    response = requests.get(config['api']['badges']+f"?per_page={PAGE_LIMIT}", headers={'PRIVATE-TOKEN': secret})
     all_badges = response.json()
     
     ## Remove all badges
@@ -194,6 +195,20 @@ def update_badges(secret: str):
 
 @app.post("/update/{secret}")
 async def root(secret: str):
+    print("Load config")
+    global config
+
+    assert os.path.exists("badger.toml"), "Can't find 'badger.toml' configuration file."
+
+    with open("badger.toml", mode="rb") as fp:
+        config = tomli.load(fp)
+    
+    # Per page is necessay, as gitlab only returns those data that is visible on the page.
+    config['api'] = {}
+    config['api']['labels'] = f"{config['repo']['project_api_url']}labels?per_page={PAGE_LIMIT}"
+    config['api']['issues'] = f"{config['repo']['project_api_url']}issues?state=opened&per_page={PAGE_LIMIT}"
+    config['api']['badges'] = f"{config['repo']['project_api_url']}badges"
+
     print("Update")
     update_badges(secret)
     return {f"update done"}
