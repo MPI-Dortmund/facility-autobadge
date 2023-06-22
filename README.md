@@ -1,6 +1,6 @@
 # facility-autobadge
 
-Facility badge creates a traffic light system for facility devices on your gitlab repo startpage. The traffic light system gets automatically updated based on the issues in the issues list. In that way, all users of the facility know the current status of the devices:
+Facility badge creates a traffic light system for facility devices on your gitlab repo startpage. The traffic light system gets automatically updated based on the issues in the issues list. In that way, all users of the facility know the current status of the devices.
 
 ![autobadge example](resources/autobadge.png)
 
