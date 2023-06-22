@@ -6,4 +6,3 @@ dependencies:
   - python=3.9
   - git
   - tomli
-prefix: /home/cloud/miniconda3/envs/badgeserver
