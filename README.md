@@ -28,11 +28,11 @@ The facility-badge server needs to reachable by your gitlab installation. It doe
 
 On your server do the following
 
-1. Clone the repository using git
+1. Clone the repository using git and navigate into the repo directory
 
 2. Create the conda environment `autobadge`:
     ```bash
-    conda create --name "autobadge" --file=conda_env.yml
+    conda create --name "autobadge" --file=config/conda_env.yml
     ```
 
     Check the path to your new conda environment with
