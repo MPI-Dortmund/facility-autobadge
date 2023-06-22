@@ -195,12 +195,13 @@ def update_badges(secret: str):
 
 @app.post("/update/{secret}")
 async def root(secret: str):
-    print("Load config")
+
     global config
+    configpth = os.path.join(os.path.dirname(__file__), "../config/badger.toml")
+    print(f"Load config: {configpth}")
+    assert os.path.exists(configpth), "Can't find 'badger.toml' configuration file."
 
-    assert os.path.exists("badger.toml"), "Can't find 'badger.toml' configuration file."
-
-    with open("badger.toml", mode="rb") as fp:
+    with open(configpth, mode="rb") as fp:
         config = tomllib.load(fp)
     
     # Per page is necessay, as gitlab only returns those data that is visible on the page.
