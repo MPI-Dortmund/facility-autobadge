@@ -111,7 +111,7 @@ We keep the badgeserver running in the background by using a systemctl service. 
         Replace YOUR_ACCESS_TOKEN with your access token ;-)
 
     - Activate `Mask portions of URL`
-        - Set the field `Sensitive portion of URL` to YOUR_ACCESS_TOKEN and `How it looks in the UI ` with "SECRET"
+        - Set the field `Sensitive portion of URL` to YOUR_ACCESS_TOKEN and `How it looks in the UI` to "SECRET"
     - Activate the checkboxes:
         - Issue events
         - Confidential issues events
