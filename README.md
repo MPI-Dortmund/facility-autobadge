@@ -13,13 +13,12 @@ This project was developed in cooperation with our EM-Facility managers at the M
 ## Traffic system rules
 The badges are automatically updated by using gitlab webhooks, according the following rules:
 
-- For each label starting with the prefix "D:" it creates a badge with either the status "RUNNING", "LIMITED" or "DOWN".
+- For each label starting with the prefix "D:" it creates a badge with either the status "RUNNING","RUNNING | INFO", "LIMITED" or "DOWN".
 - For a given device label ("D:XXX") it will set the status to:
-    - "RUNNING" if there is no issue with the device label
-    - "RUNNING | INFO" Important information available.
-    - "LIMITED" if there is an issue with the device label or
-    - "DOWN" if there is an issue with the device label and additionally it has the label "CRITICAL" assigned
-    
+    - "RUNNING" if there is no issue with the device label. The status label is green.
+    - "RUNNING | INFO" Important information available. The status label is green, but the device name turns blue.
+    - "LIMITED" if there is an issue with the device label. The status label is yellow.
+    - "DOWN" if there is an issue with the device label and additionally it has the label "CRITICAL" assigned. The status label is red.
 
 
 Issues with the label "logbook" will be ignored.
