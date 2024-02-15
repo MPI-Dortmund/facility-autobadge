@@ -46,7 +46,7 @@ On your facility-badge server do the following
 2. Create the conda environment `autobadge`
 
     ```bash
-    conda create --name "autobadge" --file=config/conda_env.yml
+    conda env create --name "autobadge" --file=config/conda_env.yml
     ```
 
     Check the path to your new conda environment with
